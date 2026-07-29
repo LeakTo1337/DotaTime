@@ -238,6 +238,86 @@
   .result-btn { padding: .7rem 2.5rem; font-family: 'Oswald', sans-serif; font-size: 1.1rem; letter-spacing: .2em; text-transform: uppercase; color: #fff; background: #1a2a1a; border: 1px solid #6bcc6b55; border-radius: 4px; cursor: pointer; }
   .result-btn:hover { background: #2a4a2a; box-shadow: 0 0 20px #00ff0044; }
 
+  /* ───────── ДОДЖ ГЕЙМ: выбор ───────── */
+  #dodge-select-screen { gap: 1.4rem; padding: 6rem 1rem 2rem; }
+  .dodge-section { display: flex; flex-direction: column; align-items: center; gap: .7rem; }
+  .dodge-section-label { font-size: .85rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .dodge-row { display: flex; gap: .8rem; flex-wrap: wrap; justify-content: center; width: min(560px, 92vw); }
+  .dodge-option {
+    padding: .75rem 1.2rem;
+    font-family: 'Oswald', sans-serif; font-size: .95rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--text);
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    cursor: pointer; transition: all .15s;
+  }
+  .dodge-option:hover { border-color: var(--red); transform: translateY(-2px); }
+  .dodge-option.selected {
+    background: linear-gradient(135deg, #6b0000, #cc1a1a);
+    border-color: var(--red-hot);
+    color: #fff;
+    box-shadow: 0 0 18px #cc1a1a55;
+  }
+  .dodge-start-btn { display: none; }
+  .dodge-start-btn.show { display: inline-block; }
+
+  /* ───────── ДОДЖ ГЕЙМ: сама игра ───────── */
+  #dodge-game-screen { gap: 1.6rem; }
+  .dodge-stage { display: flex; flex-direction: column; align-items: center; gap: 1.6rem; width: min(520px, 94vw); }
+
+  .hero-icon-box {
+    position: absolute; top: 5.5rem; left: 1.4rem;
+    width: 72px; height: 72px;
+    border-radius: 8px; overflow: hidden;
+    border: 2px solid var(--line);
+    background: var(--card2);
+  }
+  .hero-icon-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .gif-stage {
+    width: min(480px, 92vw); aspect-ratio: 16 / 10;
+    background: var(--card2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .gif-stage img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dodge-countdown {
+    font-family: 'Creepster', cursive;
+    font-size: 5rem;
+    color: var(--red-hot);
+    text-shadow: 0 0 30px #ff000088;
+  }
+
+  .skill-panel { display: flex; gap: .6rem; }
+  .skill-slot {
+    width: 72px; height: 72px;
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; position: relative;
+    transition: all .1s;
+  }
+  .skill-slot:hover { border-color: var(--red); box-shadow: 0 0 14px #cc1a1a55; }
+  .skill-slot:active { transform: scale(.93); }
+  .skill-slot.disabled { opacity: .4; cursor: default; pointer-events: none; }
+  .skill-key {
+    position: absolute; top: 2px; left: 5px;
+    font-size: .7rem; font-weight: 700; color: var(--muted);
+  }
+  .skill-name {
+    font-size: .58rem; text-align: center; padding: 0 .3rem;
+    text-transform: uppercase; letter-spacing: .03em; color: var(--text);
+    line-height: 1.15;
+  }
+
+  #dodge-result-screen { gap: 1.6rem; }
+  .result-title.fail { color: var(--red-hot); text-shadow: 0 0 20px #ff000066; }
+  .result-btn.fail-btn { background: #2a1a1a; border: 1px solid #ff2b2b55; }
+  .result-btn.fail-btn:hover { background: #4a1a1a; box-shadow: 0 0 20px #ff000044; }
+
   /* ───────── SPIDER CHAOS ───────── */
   #chaos-layer { position: fixed; inset: 0; pointer-events: none; z-index: 999; display: none; overflow: hidden; background: var(--bg); }
   #chaos-layer.active { display: block; }
@@ -277,10 +357,10 @@
       <div class="game-card-title">Мидость</div>
       <div class="game-card-desc">тест на мид™</div>
     </div>
-    <div class="game-card locked">
-      <div class="game-card-icon">🔒</div>
-      <div class="game-card-title">Скоро</div>
-      <div class="game-card-desc">новый режим в разработке</div>
+    <div class="game-card" onclick="openGame('dodge')">
+      <div class="game-card-icon">🛡️</div>
+      <div class="game-card-title">Додж Гейм</div>
+      <div class="game-card-desc">успей задоджить</div>
     </div>
     <div class="game-card locked">
       <div class="game-card-icon">🔒</div>
@@ -309,6 +389,54 @@
   <div class="result-title">✅ ТЕСТ ПРОЙДЕН</div>
   <div class="result-sub">Ты определённо не еблан</div>
   <button class="result-btn" onclick="goHub()">↩ В МЕНЮ</button>
+</div>
+
+<!-- ═══════════ ДОДЖ ГЕЙМ: ВЫБОР ═══════════ -->
+<div id="dodge-select-screen" class="screen">
+  <button class="back-btn" onclick="goHub()">← В МЕНЮ</button>
+  <div class="game-title">ДОДЖ ГЕЙМ</div>
+
+  <div class="dodge-section">
+    <div class="dodge-section-label">Чем доджить</div>
+    <div class="dodge-row" id="dodge-ability-row"></div>
+  </div>
+
+  <div class="dodge-section">
+    <div class="dodge-section-label">Что доджить</div>
+    <div class="dodge-row" id="dodge-target-row"></div>
+  </div>
+
+  <button class="enter-btn dodge-start-btn" id="dodge-start-btn" onclick="startDodgeGame()">▶ НАЧАТЬ</button>
+</div>
+
+<!-- ═══════════ ДОДЖ ГЕЙМ: ИГРА ═══════════ -->
+<div id="dodge-game-screen" class="screen">
+  <div class="hero-icon-box">
+    <img src="gif/dodgegame/hero.gif" alt="hero" onerror="this.style.display='none'">
+  </div>
+
+  <div class="dodge-stage">
+    <div class="gif-stage" id="dodge-gif-stage">
+      <div class="dodge-countdown" id="dodge-countdown">3</div>
+    </div>
+
+    <div class="skill-panel">
+      <div class="skill-slot" id="dodge-skill-slot" onclick="pressDodgeSkill()">
+        <span class="skill-key">D</span>
+        <span class="skill-name" id="dodge-skill-name"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ДОДЖ ГЕЙМ: РЕЗУЛЬТАТ ═══════════ -->
+<div id="dodge-result-screen" class="screen">
+  <div class="result-title" id="dodge-result-title">✅ ЗАДОДЖЕНО</div>
+  <div class="result-sub" id="dodge-result-sub"></div>
+  <div style="display:flex; gap:1rem; flex-wrap: wrap; justify-content:center;">
+    <button class="result-btn" id="dodge-retry-btn" onclick="restartDodgeSelect()">↻ ЗАНОВО</button>
+    <button class="result-btn" onclick="goHub()">🏠 В МЕНЮ</button>
+  </div>
 </div>
 
 <!-- ═══════════ PROFILE MODAL (без регистрации) ═══════════ -->
@@ -396,10 +524,16 @@ function enterSite() {
   }, 480);
 }
 
-function goHub() { showOnly('hub-screen'); }
+function goHub() {
+  if (typeof clearDodgeTimers === 'function') clearDodgeTimers();
+  if (typeof dodgeKeyHandler === 'function') document.removeEventListener('keydown', dodgeKeyHandler);
+  if (typeof dodgeAttackStart !== 'undefined') dodgeAttackStart = 0;
+  showOnly('hub-screen');
+}
 
 function openGame(id) {
   if (id === 'midost') showOnly('question-screen');
+  if (id === 'dodge') openDodgeSelect();
 }
 
 /* время на сайте копится, пока открыт хаб/игра (не на стартовом экране) */
@@ -461,7 +595,7 @@ window.addEventListener('load', renderProfile);
    МИДОСТЬ — игра (логика без изменений)
    ════════════════════════════════════════════════════════════ */
 const MAX_SPIDERS = 1000;
-const SPIDER_GIFS = ['spider1.gif','spider2.gif','spider3.gif','spider4.gif','spider5.gif'];
+const SPIDER_GIFS = ['gif/spiders/spider1.gif','gif/spiders/spider2.gif','gif/spiders/spider3.gif','gif/spiders/spider4.gif','gif/spiders/spider5.gif'];
 let chaosActive = false;
 let spiderEls = [];
 
@@ -562,6 +696,218 @@ function endChaos(shuffleInterval) {
     spiderEls = [];
     finishGame();
   }, 2500);
+}
+
+/* ════════════════════════════════════════════════════════════
+   ДОДЖ ГЕЙМ
+   ════════════════════════════════════════════════════════════
+
+   Все гифки лежат в папке gif/dodgegame/ (иконка героя — gif/dodgegame/hero.gif)
+
+   Имя файла-результата = <ключЦели><ключСпособности><суффикс>.gif
+   Суффиксы: dodge (додж получился), nondodge (герой поймал урон), afk (игрок не нажал вообще)
+
+   Пример (как в задаче): 3 скилл течиса + манта:
+     gif/dodgegame/techiesmantadodge.gif      — успешный додж
+     gif/dodgegame/techiesmantanondodge.gif   — не задоджил (нажал не вовремя/рано/поздно)
+     gif/dodgegame/techiesmantaafk.gif        — вообще не нажал способность
+   ════════════════════════════════════════════════════════════ */
+
+/* Способности, которыми доджим (верхний ряд выбора) */
+const DODGE_ABILITIES = [
+  { key: 'manta', label: 'Манта' },
+  { key: 'pak',   label: '3 скилл Пака' },
+  { key: 'vk',    label: 'Ульта ВК' }
+];
+
+/* То, что доджим (нижний ряд выбора) */
+const DODGE_TARGETS = [
+  { key: 'techies',   label: '3 скилл Течиса' },
+  { key: 'alchemist', label: 'Колба алхимика' },
+  { key: 'slardar',   label: '2 скилл Слардара' }
+];
+
+/* Тайминги на каждую комбинацию "цель_способность".
+   Все значения в миллисекундах — отсчитываются от момента,
+   когда закончился отсчёт 3-2-1 и начала играть гифка атаки/прыжка.
+
+   windowStart / windowEnd — окно, в которое нажатие способности = успешный додж
+   duration                — сколько всего "длится" атака.
+                             Если игрок вообще не нажал способность до этого момента — сыграет afk-гифка.
+
+   ЭТО ЗАГЛУШКА ПОД ТВОИ БУДУЩИЕ ГИФКИ.
+   Когда запишешь реальные гифки — подставь сюда точные тайминги под каждую
+   пару (когда именно на гифке происходит "контакт", под это и подгоняется окно). */
+const DODGE_TIMINGS = {};
+DODGE_TARGETS.forEach(t => {
+  DODGE_ABILITIES.forEach(a => {
+    DODGE_TIMINGS[`${t.key}_${a.key}`] = { windowStart: 700, windowEnd: 1100, duration: 1700 };
+  });
+});
+
+function dodgeGifPath(targetKey, abilityKey, suffix) {
+  return `gif/dodgegame/${targetKey}${abilityKey}${suffix}.gif`;
+}
+
+/* состояние текущего забега */
+let dodgeChoice = { ability: null, target: null };
+let dodgeTimers = [];      // все активные setTimeout, чтобы гасить их при выходе/рестарте
+let dodgeResolved = false; // способность уже применена (додж/взрыв/афк) — повторные нажатия игнорим
+let dodgeAttackStart = 0;  // performance.now() в момент старта гифки атаки
+
+function clearDodgeTimers() {
+  dodgeTimers.forEach(id => clearTimeout(id));
+  dodgeTimers = [];
+}
+function dodgeSetTimeout(fn, ms) {
+  const id = setTimeout(fn, ms);
+  dodgeTimers.push(id);
+  return id;
+}
+
+/* ───────── экран выбора ───────── */
+function openDodgeSelect() {
+  dodgeChoice = { ability: null, target: null };
+  renderDodgeRow('dodge-ability-row', DODGE_ABILITIES, 'ability');
+  renderDodgeRow('dodge-target-row', DODGE_TARGETS, 'target');
+  updateDodgeStartBtn();
+  showOnly('dodge-select-screen');
+}
+
+function renderDodgeRow(containerId, list, kind) {
+  const row = document.getElementById(containerId);
+  row.innerHTML = '';
+  list.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'dodge-option';
+    btn.textContent = item.label;
+    btn.onclick = () => selectDodgeOption(kind, item.key, containerId);
+    row.appendChild(btn);
+  });
+}
+
+function selectDodgeOption(kind, key, containerId) {
+  dodgeChoice[kind] = key;
+  document.querySelectorAll(`#${containerId} .dodge-option`).forEach(btn => {
+    btn.classList.toggle('selected', btn.textContent === labelForKey(kind, key));
+  });
+  updateDodgeStartBtn();
+}
+
+function labelForKey(kind, key) {
+  const list = kind === 'ability' ? DODGE_ABILITIES : DODGE_TARGETS;
+  const found = list.find(i => i.key === key);
+  return found ? found.label : '';
+}
+
+function updateDodgeStartBtn() {
+  const btn = document.getElementById('dodge-start-btn');
+  btn.classList.toggle('show', !!(dodgeChoice.ability && dodgeChoice.target));
+}
+
+function restartDodgeSelect() {
+  clearDodgeTimers();
+  openDodgeSelect();
+}
+
+/* ───────── сам игровой процесс ───────── */
+function startDodgeGame() {
+  if (!dodgeChoice.ability || !dodgeChoice.target) return;
+  clearDodgeTimers();
+  dodgeResolved = false;
+
+  document.getElementById('dodge-skill-name').textContent = labelForKey('ability', dodgeChoice.ability);
+  const slot = document.getElementById('dodge-skill-slot');
+  slot.classList.remove('disabled');
+
+  const stage = document.getElementById('dodge-gif-stage');
+  stage.innerHTML = '<div class="dodge-countdown" id="dodge-countdown">3</div>';
+
+  showOnly('dodge-game-screen');
+
+  let count = 3;
+  const countEl = () => document.getElementById('dodge-countdown');
+  const tick = () => {
+    count -= 1;
+    if (count > 0) {
+      if (countEl()) countEl().textContent = String(count);
+      dodgeSetTimeout(tick, 1000);
+    } else {
+      beginDodgeAttack();
+    }
+  };
+  dodgeSetTimeout(tick, 1000);
+
+  /* горячая клавиша D дублирует клик по способности */
+  document.addEventListener('keydown', dodgeKeyHandler);
+}
+
+function dodgeKeyHandler(e) {
+  if (e.key && e.key.toLowerCase() === 'd') pressDodgeSkill();
+}
+
+function beginDodgeAttack() {
+  const stage = document.getElementById('dodge-gif-stage');
+  stage.innerHTML = ''; // тут по-хорошему будет играть "нейтральная" анимация начала атаки, если она у тебя будет отдельным файлом
+
+  dodgeAttackStart = performance.now();
+
+  const timing = DODGE_TIMINGS[`${dodgeChoice.target}_${dodgeChoice.ability}`];
+
+  /* если игрок вообще не нажал способность за всё время атаки — afk */
+  dodgeSetTimeout(() => {
+    if (dodgeResolved) return;
+    resolveDodge('afk');
+  }, timing.duration);
+}
+
+function pressDodgeSkill() {
+  if (dodgeResolved) return;
+  if (!document.getElementById('dodge-game-screen').classList.contains('active')) return;
+  if (dodgeAttackStart === 0) return; // ещё идёт отсчёт 3-2-1, способность пока недоступна
+
+  const timing = DODGE_TIMINGS[`${dodgeChoice.target}_${dodgeChoice.ability}`];
+  const elapsed = performance.now() - dodgeAttackStart;
+
+  if (elapsed >= timing.windowStart && elapsed <= timing.windowEnd) {
+    resolveDodge('dodge');
+  } else {
+    resolveDodge('nondodge');
+  }
+}
+
+function resolveDodge(outcome) {
+  if (dodgeResolved) return;
+  dodgeResolved = true;
+  document.getElementById('dodge-skill-slot').classList.add('disabled');
+  document.removeEventListener('keydown', dodgeKeyHandler);
+
+  const stage = document.getElementById('dodge-gif-stage');
+  const gifPath = dodgeGifPath(dodgeChoice.target, dodgeChoice.ability, outcome);
+  stage.innerHTML = `<img src="${gifPath}" alt="${outcome}">`;
+
+  const timing = DODGE_TIMINGS[`${dodgeChoice.target}_${dodgeChoice.ability}`];
+  dodgeSetTimeout(() => finishDodgeGame(outcome), timing.duration);
+}
+
+function finishDodgeGame(outcome) {
+  dodgeAttackStart = 0;
+
+  if (outcome === 'dodge') {
+    stats.gamesPlayed += 1;
+    storeSet('dotatime_stats', stats);
+    renderStats();
+    document.getElementById('dodge-result-title').textContent = '✅ ЗАДОДЖЕНО';
+    document.getElementById('dodge-result-title').classList.remove('fail');
+    document.getElementById('dodge-result-sub').textContent = 'Ты прошёл Додж Гейм';
+  } else {
+    const text = outcome === 'afk' ? '💀 НЕ УСПЕЛ' : '💀 НЕ ЗАДОДЖИЛ';
+    document.getElementById('dodge-result-title').textContent = text;
+    document.getElementById('dodge-result-title').classList.add('fail');
+    document.getElementById('dodge-result-sub').textContent = 'Попробуй ещё раз';
+  }
+
+  showOnly('dodge-result-screen');
 }
 </script>
 </body>
